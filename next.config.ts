@@ -1,16 +1,12 @@
 import type { NextConfig } from "next";
 
+const isGithubPages = process.env.GITHUB_ACTIONS === "true";
+
 const nextConfig: NextConfig = {
-  /* config options here */
-  cacheComponents: true,
-  partialPrefetching: true,
-  turbopack: {
-    rules: {
-      "*.css": {
-        loaders: ["@tailwindcss/turbopack"],
-        as: "*.css",
-      },
-    },
+  ...(isGithubPages ? { output: "export" as const } : {}),
+  basePath: isGithubPages ? "/Meeting-booking-system" : "",
+  images: {
+    unoptimized: true,
   },
 };
 

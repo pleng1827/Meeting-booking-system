@@ -148,23 +148,72 @@ export function BookingFormModal({
         fileAttachment: fileData,
       };
 
-      const res = await fetch('/api/bookings', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
+      let res;
+      try {
+        res = await fetch('/api/bookings', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+      } catch (networkErr) {
+        // Fallback for static hosting (GitHub Pages)
+        res = null;
+      }
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        if (res.status === 409) {
-          // Double-booking conflict
-          setConflictError(data.error || 'ช่วงเวลานี้มีผู้จองห้องประชุมไปแล้ว กรุณาเลือกเวลาอื่น');
-        } else {
-          setGeneralError(data.error || 'เกิดข้อผิดพลาดในการจอง');
-        }
+      if (res && res.status === 409) {
+        const data = await res.json().catch(() => ({}));
+        setConflictError(data.error || 'ช่วงเวลานี้มีผู้จองห้องประชุมไปแล้ว กรุณาเลือกเวลาอื่น');
         setLoading(false);
         return;
+      }
+
+      if (!res || !res.ok) {
+        // Fallback for static hosting: save to localStorage
+        const newLocalBooking = {
+          id: `bk_local_${Date.now()}`,
+          roomId,
+          userId: 'usr_local',
+          title,
+          description: description || null,
+          startTime: startDateTime.toISOString(),
+          endTime: endDateTime.toISOString(),
+          attendeesCount: Number(attendeesCount),
+          equipmentRequested: selectedEquipment,
+          status: 'CONFIRMED' as const,
+          syncedToSheets: true,
+          sheetRowId: null,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          room: selectedRoom,
+          user: {
+            id: 'usr_local',
+            name: bookerName,
+            email: bookerEmail,
+            role: 'USER',
+            department: 'Company',
+            avatarUrl: null,
+          },
+          attachments: fileData
+            ? [
+                {
+                  id: `att_local_${Date.now()}`,
+                  bookingId: `bk_local_${Date.now()}`,
+                  fileName: fileData.fileName,
+                  fileSize: fileData.size,
+                  mimeType: fileData.mimeType,
+                  driveFileId: 'mock_drive',
+                  driveWebViewLink: 'https://drive.google.com',
+                  driveDownloadLink: null,
+                  createdAt: new Date().toISOString(),
+                },
+              ]
+            : [],
+        };
+
+        if (typeof window !== 'undefined') {
+          const existing = JSON.parse(localStorage.getItem('meetsync_bookings') || '[]');
+          localStorage.setItem('meetsync_bookings', JSON.stringify([...existing, newLocalBooking]));
+        }
       }
 
       // Success

@@ -32,14 +32,16 @@ import {
   RefreshCw,
 } from 'lucide-react';
 
+import { INITIAL_MOCK_ROOMS, INITIAL_MOCK_BOOKINGS } from '@/lib/mock-data';
+
 export default function DashboardPage() {
-  const [rooms, setRooms] = useState<RoomData[]>([]);
-  const [bookings, setBookings] = useState<BookingData[]>([]);
+  const [rooms, setRooms] = useState<RoomData[]>(INITIAL_MOCK_ROOMS);
+  const [bookings, setBookings] = useState<BookingData[]>(INITIAL_MOCK_BOOKINGS);
   const [stats, setStats] = useState({
-    totalRooms: 0,
-    availableRoomsNow: 0,
+    totalRooms: 4,
+    availableRoomsNow: 4,
     activeMeetingsNow: 0,
-    totalBookingsToday: 0,
+    totalBookingsToday: 2,
   });
   const [loading, setLoading] = useState(true);
 
@@ -57,25 +59,43 @@ export default function DashboardPage() {
   const loadData = useCallback(async () => {
     try {
       const [roomsRes, bookingsRes] = await Promise.all([
-        fetch('/api/rooms'),
-        fetch('/api/bookings'),
+        fetch('/api/rooms').catch(() => null),
+        fetch('/api/bookings').catch(() => null),
       ]);
 
-      const roomsJson = await roomsRes.json();
-      const bookingsJson = await bookingsRes.json();
+      if (roomsRes && roomsRes.ok) {
+        const roomsJson = await roomsRes.json();
+        if (roomsJson.success) {
+          setRooms(roomsJson.data);
+          if (roomsJson.stats) setStats(roomsJson.stats);
+        }
+      } else {
+        // Fallback for static hosting (GitHub Pages)
+        setRooms(INITIAL_MOCK_ROOMS);
+      }
 
-      if (roomsJson.success) {
-        setRooms(roomsJson.data);
-        if (roomsJson.stats) {
-          setStats(roomsJson.stats);
+      if (bookingsRes && bookingsRes.ok) {
+        const bookingsJson = await bookingsRes.json();
+        if (bookingsJson.success) {
+          setBookings(bookingsJson.data);
+        }
+      } else {
+        // Fallback for static hosting (GitHub Pages) + localStorage
+        const saved = typeof window !== 'undefined' ? localStorage.getItem('meetsync_bookings') : null;
+        if (saved) {
+          try {
+            setBookings([...INITIAL_MOCK_BOOKINGS, ...JSON.parse(saved)]);
+          } catch {
+            setBookings(INITIAL_MOCK_BOOKINGS);
+          }
+        } else {
+          setBookings(INITIAL_MOCK_BOOKINGS);
         }
       }
-
-      if (bookingsJson.success) {
-        setBookings(bookingsJson.data);
-      }
     } catch (err) {
-      console.error('Failed to load dashboard data:', err);
+      console.warn('Using mock data fallback:', err);
+      setRooms(INITIAL_MOCK_ROOMS);
+      setBookings(INITIAL_MOCK_BOOKINGS);
     } finally {
       setLoading(false);
     }
