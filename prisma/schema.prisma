@@ -1,0 +1,105 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String         @id @default(cuid())
+  name          String
+  email         String         @unique
+  role          String         @default("USER") // "USER" | "ADMIN"
+  department    String?
+  avatarUrl     String?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  bookings      Booking[]
+  notifications Notification[]
+
+  @@map("users")
+}
+
+model Room {
+  id          String    @id @default(cuid())
+  name        String
+  description String?
+  capacity    Int
+  location    String
+  equipment   String    // JSON array stored as string for cross-db compatibility: '["Projector","Microphone"]'
+  imageUrl    String?
+  color       String    @default("#3b82f6") // Accent color for calendar display
+  isActive    Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  bookings    Booking[]
+
+  @@map("rooms")
+}
+
+model Booking {
+  id                 String        @id @default(cuid())
+  roomId             String
+  userId             String
+  title              String
+  description        String?
+  startTime          DateTime
+  endTime            DateTime
+  attendeesCount     Int           @default(1)
+  equipmentRequested String?       // JSON array stored as string: '["Projector"]'
+  status             String        @default("CONFIRMED") // "PENDING" | "CONFIRMED" | "CANCELLED" | "COMPLETED"
+  syncedToSheets     Boolean       @default(false)
+  sheetRowId         String?
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+
+  room               Room          @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  user               User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  attachments        Attachment[]
+  notifications      Notification[]
+
+  @@index([roomId, startTime, endTime])
+  @@index([status])
+  @@map("bookings")
+}
+
+model Attachment {
+  id               String   @id @default(cuid())
+  bookingId        String
+  fileName         String
+  fileSize         Int
+  mimeType         String
+  driveFileId      String   // Google Drive File ID
+  driveWebViewLink String   // Direct view link
+  driveDownloadLink String? // Direct download link
+  createdAt        DateTime @default(now())
+
+  booking          Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+
+  @@index([bookingId])
+  @@map("attachments")
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  bookingId String?
+  title     String
+  message   String
+  type      String   @default("SYSTEM") // "BOOKING_CREATED" | "BOOKING_CANCELLED" | "BOOKING_REMINDER" | "SYSTEM"
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  booking   Booking? @relation(fields: [bookingId], references: [id], onDelete: SetNull)
+
+  @@index([userId, isRead])
+  @@map("notifications")
+}
