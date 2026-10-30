@@ -1,0 +1,27 @@
+1:"$Sreact.fragment"
+2:I[7121,[],""]
+3:I[4581,[],""]
+5:I[1304,[],"ClientPageRoot"]
+6:"static/chunks/41ade5dc-1c7a4bafb8e734be.js"
+7:"static/chunks/956-dbfcd1348557bd88.js"
+8:"static/chunks/43-cec2910716689750.js"
+9:"static/chunks/643-67dd0304b357e2bb.js"
+a:"static/chunks/473-1191292cf6ea2d0a.js"
+b:"static/chunks/app/page-5062de47066a2c68.js"
+c:I[658,["320","$6","956","$7","43","$8","643","$9","473","$a","974","$b"],"default"]
+f:I[484,[],"OutletBoundary"]
+10:"$Sreact.suspense"
+12:"ViewportBoundary"
+13:I[484,[],"$12"]
+15:"MetadataBoundary"
+16:I[484,[],"$15"]
+18:I[7123,[],"default",1]
+:HL["/Meeting-booking-system/_next/static/css/d0be88e5324529d6.css","style"]
+4:[["children",{"s":"__PAGE__","h":512,"d":{"r":["$","$1","c",{"children":[["$","$L5",null,{"Component":"$c","serverProvidedParams":{"searchParams":{},"params":{},"promises":["$@d","$@e"]}}],null,["$","$Lf",null,{"children":["$","$10",null,{"name":"Next.MetadataOutlet","children":"$@11"}]}]]}],"p":false,"v":null}}]]
+0:{"P":null,"c":["",""],"q":"","i":false,"t":{"t":{"s":"","h":528,"d":{"r":["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/Meeting-booking-system/_next/static/css/d0be88e5324529d6.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]],["$","html",null,{"lang":"th","className":"__variable_aff6fa __variable_cda669 antialiased","children":["$","body",null,{"className":"min-h-screen bg-slate-50 text-slate-900 font-sans selection:bg-blue-600 selection:text-white","children":["$","$L2",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L3",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}]}]]}],"p":false,"v":null},"c":"$Q4"},"h":{"r":["$","$1","h",{"children":[null,["$","$L13",null,{"children":"$L14"}],["$","$L16",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$10",null,{"name":"Next.Metadata","children":"$L17"}]}],null]}],null]}],"p":false,"v":null}},"m":"$undefined","G":["$18",[]],"S":true,"r":"$undefined","s":"$undefined","a":"$undefined","l":"$undefined","p":"$undefined","d":"$undefined","b":"hjvpWD8aeBrmdVrbPMD-9"}
+d:{}
+e:"$4:0:1:d:r:props:children:0:props:serverProvidedParams:params"
+14:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
+19:I[6869,[],"IconMark"]
+11:null
+17:[["$","title","0",{"children":"MeetSync - ระบบจองห้องประชุม & Google Workspace Sync"}],["$","meta","1",{"name":"description","content":"ระบบจองห้องประชุมอัจฉริยะ ตรวจสอบเวลาชนแบบ Real-time พร้อมเชื่อมต่อ Google Sheets และ Google Drive"}],["$","link","2",{"rel":"icon","href":"/Meeting-booking-system/favicon.ico?7161ee1d105bc9c7","type":"image/x-icon","sizes":"48x48"}],["$","$L19","3",{}]]
